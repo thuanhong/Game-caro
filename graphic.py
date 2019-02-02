@@ -26,6 +26,7 @@ class gameMain(pyglet.window.Window):
         self.frame_rate = 1/60.0
         self.player = 'X'
         self.win = False
+        self.cur_player = pyglet.text.Label('Player : X', y=500, x=10, font_size = 25)
 
         self.board = [[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
                      [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
@@ -76,25 +77,35 @@ class gameMain(pyglet.window.Window):
                 elif self.board[x][y] == 'O':
                     chess(x*30, y*30, self.chess_o).draw()
 
-        if self.win:
+        if check_draw(self.board):
+            self.result = pyglet.text.Label('DRAW ' + ", Click E to exit, press R to reload",
+                                                    y=500, x=10, font_size = 25)
+            self.result.draw()
+        elif self.win:
             self.result = pyglet.text.Label('Congartulation player ' + self.player + ' win'
                                                   + ", Click E to exit, press R to reload",
                                                     y=500, x=10)
             self.result.draw()
+        else:
+            self.cur_player.draw()
 
     def on_mouse_press(self, x, y, button, modifiers):
         if button == pyglet.window.mouse.LEFT and not self.win:
-            if self.board[int(x/30)][int(y/30)] == ' ':
-                if not handle_main(int(x/30), int(y/30), self.player, self.board):
-                    if self.player == 'X':
-                        self.player = 'O'
+            try:
+                if self.board[int(x/30)][int(y/30)] == ' ':
+                    if not handle_main(int(x/30), int(y/30), self.player, self.board):
+                        if self.player == 'X':
+                            self.player = 'O'
+                        else:
+                            self.player = 'X'
+                        self.cur_player.text = 'Player : ' + self.player
                     else:
-                        self.player = 'X'
-                else:
-                    self.win = True
+                        self.win = True
+            except:
+                pass
 
     def on_key_press(self, button, modifiers):
-        if button == pyglet.window.key.R and self.win:
+        if button == pyglet.window.key.R:
             self.reload()
         if button == pyglet.window.key.E:
             pyglet.app.exit()
