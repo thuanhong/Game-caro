@@ -1,4 +1,4 @@
-def check_draw(board):
+def check_draw(board): # check state draw
     for x in board:
         if ' ' in x:
             return False
@@ -6,14 +6,12 @@ def check_draw(board):
 
 
 def handle_main(x, y, player, board):
-    def check_win(x, y, player, board):
+    def check_win(x, y, player, board): # True if either of my two player win
 
-        arr = [ [[1, 0], [-1, 0]],
+        arr = [ [[1, 0], [-1, 0]], # check 8 direction
                 [[0, 1], [0, -1]],
                 [[1, 1], [-1, -1]],
                 [[1, -1], [-1, 1]] ]
-
-        enemy = "X" if player == 'O' else 'O'
 
         for h in arr:
             count = 0
@@ -21,7 +19,7 @@ def handle_main(x, y, player, board):
             tmp_x = x
             tmp_y = y
             try:
-                while board[tmp_x][tmp_y] != ' ':
+                while board[tmp_x][tmp_y] != ' ': # check direction
                     if board[tmp_x][tmp_y] == player:
                         count += 1
                         tmp_x += h[0][0]
@@ -34,7 +32,7 @@ def handle_main(x, y, player, board):
             tmp_x = x
             tmp_y = y
             try:
-                while board[tmp_x][tmp_y] != ' ':
+                while board[tmp_x][tmp_y] != ' ': # check opposite direction
                     if board[tmp_x][tmp_y] == player:
                         count += 1
                         tmp_x += h[1][0]
@@ -44,7 +42,8 @@ def handle_main(x, y, player, board):
                         break
             except:
                 pass
-            if count == 6 and cou_ene != 2:
+
+            if count >= 6 and cou_ene != 2:
                 return True
         return False
 

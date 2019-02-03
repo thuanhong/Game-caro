@@ -45,7 +45,7 @@ class gameMain(pyglet.window.Window):
                      [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
                      [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']]
 
-    def reload(self):
+    def reload(self): # reload game
         self.player = 'X'
         self.win = False
 
@@ -70,29 +70,29 @@ class gameMain(pyglet.window.Window):
         self.clear()
         self.chess_board.draw()
 
-        for x in range(16):
+        for x in range(16): # draw chess on display
             for y in range(16):
                 if self.board[x][y] == 'X':
                     chess(x*30, y*30, self.chess_x).draw()
                 elif self.board[x][y] == 'O':
                     chess(x*30, y*30, self.chess_o).draw()
 
-        if check_draw(self.board):
+        if check_draw(self.board): # draw when the chess board is no avaiable
             self.result = pyglet.text.Label('DRAW ' + ", Click E to exit, press R to reload",
                                                     y=500, x=10, font_size = 25)
             self.result.draw()
-        elif self.win:
+        elif self.win: # when X win or O win
             self.result = pyglet.text.Label('Congartulation player ' + self.player + ' win'
                                                   + ", Click E to exit, press R to reload",
                                                     y=500, x=10)
             self.result.draw()
-        else:
+        else: # draw current player
             self.cur_player.draw()
 
-    def on_mouse_press(self, x, y, button, modifiers):
+    def on_mouse_press(self, x, y, button, modifiers): # take mouse event
         if button == pyglet.window.mouse.LEFT and not self.win:
             try:
-                if self.board[int(x/30)][int(y/30)] == ' ':
+                if self.board[int(x/30)][int(y/30)] == ' ': # when click on the square contain " "
                     if not handle_main(int(x/30), int(y/30), self.player, self.board):
                         if self.player == 'X':
                             self.player = 'O'
@@ -101,10 +101,10 @@ class gameMain(pyglet.window.Window):
                         self.cur_player.text = 'Player : ' + self.player
                     else:
                         self.win = True
-            except:
+            except: # except error Out IndexList when click outside chess board
                 pass
 
-    def on_key_press(self, button, modifiers):
+    def on_key_press(self, button, modifiers): # take keyboard event
         if button == pyglet.window.key.R:
             self.reload()
         if button == pyglet.window.key.E:
